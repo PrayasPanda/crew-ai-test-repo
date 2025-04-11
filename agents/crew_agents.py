@@ -1,25 +1,20 @@
-from crewai import Agent, Task, Crew
-from tools.crew_tools import get_repo_details, get_file_content, review_code_snippet
+from crewai import Agent
+from tools.crew_tools import (
+    get_repo_details_tool,
+    get_file_content_tool,
+    review_code_snippet_tool
+)
 
-# Define Agent
 review_agent = Agent(
-    role="Senior GitHub Analyst",
-    goal="Analyze and review GitHub repositories",
-    backstory="An expert in Python and open-source repo analysis.",
-    tools=[get_repo_details, get_file_content, review_code_snippet],
+    role="Code Reviewer",
+    goal="Review and analyze GitHub repos",
+    backstory="You are a senior AI developer who reviews open-source projects.",
+    tools=[
+        get_repo_details_tool,
+        get_file_content_tool,
+        review_code_snippet_tool
+    ],
     verbose=True
 )
 
-# Define Task
-task = Task(
-    description="Analyze the repo structure and review main.py.",
-    expected_output="Repo overview and code review of main.py",
-    agent=review_agent
-)
-
-# Create Crew
-crew = Crew(
-    agents=[review_agent],
-    tasks=[task],
-    verbose=True
-)
+crew = [review_agent]
